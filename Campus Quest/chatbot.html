@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - CampusQuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(37, 99, 235, 0.9), rgba(29, 78, 216, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--gray-200);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-300);
+        }
+
+        /* Chatbot Section */
+        .chatbot-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+
+        .chatbot-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .chatbot-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .chatbot-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+
+        .chatbot-info p {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .chatbot-messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid var(--gray-300);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bot-message {
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-left: 4px solid var(--primary);
+            align-self: flex-start;
+            box-shadow: var(--shadow);
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            margin-left: auto;
+            border-left: 4px solid var(--primary-dark);
+            box-shadow: var(--shadow);
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            opacity: 0.8;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingAnimation {
+            0%, 80%, 100% { 
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .message-content {
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .message-content strong {
+            color: inherit;
+            font-weight: 600;
+        }
+
+        .message-content em {
+            font-style: italic;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .message-header strong {
+            font-weight: 600;
+        }
+
+        /* Quick Questions */
+        .quick-questions {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--gray-100);
+            border-radius: 12px;
+            border: 1px solid var(--gray-300);
+        }
+
+        .quick-questions h4 {
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-questions h4 i {
+            color: var(--primary);
+        }
+
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .quick-btn {
+            padding: 1rem 1.25rem;
+            background: white;
+            border: 2px solid var(--gray-300);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--dark);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .quick-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Chatbot Input */
+        .chatbot-input {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid var(--gray-300);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .chatbot-input input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .chatbot-input button {
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-input button:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-light);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-700);
+            color: var(--gray-400);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .chatbot-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .chatbot-messages {
+                height: 350px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .quick-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .chatbot-input {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .chatbot-input input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .main-content {
+                padding: 2rem 0;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .chatbot-section {
+                padding: 1.5rem;
+            }
+
+            .chatbot-messages {
+                height: 300px;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>CampusQuest</h1>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="find-colleges.html">Find Colleges</a></li>
+                        <li><a href="compare.html">Compare</a></li>
+                        <li><a href="shortlist.html">Shortlist</a></li>
+                        <li><a href="chatbot.html" class="active">Assistant</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>AI College Recommendation Assistant</h2>
+            <p>Get personalized engineering college recommendations based on your KCET rank, preferred branch, and other preferences with our intelligent AI assistant.</p>
+            <div class="hero-buttons">
+                <a href="find-colleges.html" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Find Colleges
+                </a>
+                <a href="compare.html" class="btn btn-secondary">
+                    <i class="fas fa-balance-scale"></i> Compare Colleges
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Chatbot Section -->
+        <section id="chatbot">
+            <h2 class="section-title">College Recommendation Assistant</h2>
+            <div class="chatbot-section">
+                <div class="chatbot-container">
+                    <div class="chatbot-header">
+                        <div class="chatbot-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="chatbot-info">
+                            <h3>CampusQuest Assistant</h3>
+                            <p>Your AI-powered guide to finding the perfect engineering college in Bangalore</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chatbot-messages" id="chatbotMessages">
+                        <!-- Messages will be added here by JavaScript -->
+                    </div>
+
+                    <div class="quick-questions">
+                        <h4><i class="fas fa-bolt"></i> Quick Questions</h4>
+                        <div class="quick-buttons">
+                            <button class="quick-btn" data-question="What colleges can I get with rank 1500?">
+                                <i class="fas fa-graduation-cap"></i> Rank 1500 - Which colleges?
+                            </button>
+                            <button class="quick-btn" data-question="Best computer science colleges">
+                                <i class="fas fa-laptop-code"></i> Best CS Colleges
+                            </button>
+                            <button class="quick-btn" data-question="Colleges with good placement">
+                                <i class="fas fa-briefcase"></i> Good Placement Colleges
+                            </button>
+                            <button class="quick-btn" data-question="Affordable engineering colleges">
+                                <i class="fas fa-rupee-sign"></i> Affordable Colleges
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="chatbot-input">
+                        <input type="text" id="chatInput" placeholder="Enter your KCET rank and preferred branch (e.g., 'Rank 2000 for Computer Science')...">
+                        <button class="btn btn-primary" id="sendMessage">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CampusQuest</h3>
+                    <p>Your comprehensive guide to engineering colleges in Bangalore based on KCET rankings.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="find-colleges.html">Find Colleges</a></li>
+                        <li><a href="compare.html">Compare Colleges</a></li>
+                        <li><a href="shortlist.html">My Shortlist</a></li>
+                        <li><a href="chatbot.html">AI Assistant</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@kcetfilter.com</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 CampusQuest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // College Data
+        const colleges = [
+            {
+                id: 1,
+                name: "RV College of Engineering",
+                location: "Bangalore",
+                cutoff: {
+                    general: 500,
+                    obc: 1500,
+                    scst: 5000
+                },
+                branches: ["Computer Science", "Electronics & Communication", "Mechanical", "Civil", "AI & ML"],
+                fees: 250000,
+                rating: 4.8,
+                placement: 96,
+                logo: "🏛️",
+                website: "https://www.rvce.edu.in",
+                established: 1963
+            },
+            {
+                id: 2,
+                name: "PES University",
+                location: "Bangalore",
+                cutoff: {
+                    general: 800,
+                    obc: 2000,
+                    scst: 6000
+                },
+                branches: ["Computer Science", "Information Science", "Electronics", "Electrical", "AI & ML"],
+                fees: 280000,
+                rating: 4.7,
+                placement: 94,
+                logo: "🎓",
+                website: "https://pes.edu",
+                established: 1972
+            },
+            {
+                id: 3,
+                name: "BMS College of Engineering",
+                location: "Bangalore",
+                cutoff: {
+                    general: 1200,
+                    obc: 3000,
+                    scst: 8000
+                },
+                branches: ["Computer Science", "Electronics", "Mechanical", "Civil", "Chemical"],
+                fees: 180000,
+                rating: 4.5,
+                placement: 92,
+                logo: "🏫",
+                website: "https://bmsce.ac.in",
+                established: 1946
+            },
+            {
+                id: 4,
+                name: "MS Ramaiah Institute of Technology",
+                location: "Bangalore",
+                cutoff: {
+                    general: 1500,
+                    obc: 4000,
+                    scst: 10000
+                },
+                branches: ["Computer Science", "AI & ML", "Electronics", "Mechanical", "Civil"],
+                fees: 220000,
+                rating: 4.4,
+                placement: 90,
+                logo: "🔬",
+                website: "https://msrit.edu",
+                established: 1962
+            },
+            {
+                id: 5,
+                name: "Nitte Meenakshi Institute of Technology",
+                location: "Bangalore",
+                cutoff: {
+                    general: 2000,
+                    obc: 5000,
+                    scst: 12000
+                },
+                branches: ["Computer Science", "Information Science", "Electronics", "Civil", "Mechanical"],
+                fees: 160000,
+                rating: 4.2,
+                placement: 88,
+                logo: "📚",
+                website: "https://nmit.ac.in",
+                established: 1979
+            },
+            {
+                id: 6,
+                name: "Dayananda Sagar College of Engineering",
+                location: "Bangalore",
+                cutoff: {
+                    general: 2500,
+                    obc: 6000,
+                    scst: 15000
+                },
+                branches: ["Computer Science", "Electronics", "Mechanical", "Biotechnology", "Civil"],
+                fees: 190000,
+                rating: 4.3,
+                placement: 87,
+                logo: "🏢",
+                website: "https://dsce.edu.in",
+                established: 1979
+            },
+            {
+                id: 7,
+                name: "JSS Academy of Technical Education",
+                location: "Bangalore",
+                cutoff: {
+                    general: 3000,
+                    obc: 7000,
+                    scst: 18000
+                },
+                branches: ["Computer Science", "Electronics", "Information Science", "Civil", "Mechanical"],
+                fees: 140000,
+                rating: 4.1,
+                placement: 85,
+                logo: "🎯",
+                website: "https://jssateb.ac.in",
+                established: 1997
+            },
+            {
+                id: 8,
+                name: "Sri Venkateshwara College of Engineering",
+                location: "Bangalore",
+                cutoff: {
+                    general: 3500,
+                    obc: 8000,
+                    scst: 20000
+                },
+                branches: ["Computer Science", "Electronics", "Mechanical", "Civil", "Information Science"],
+                fees: 120000,
+                rating: 4.0,
+                placement: 82,
+                logo: "⚡",
+                website: "https://svce.edu.in",
+                established: 2001
+            },
+            {
+                id: 9,
+                name: "New Horizon College of Engineering",
+                location: "Bangalore",
+                cutoff: {
+                    general: 4000,
+                    obc: 9000,
+                    scst: 22000
+                },
+                branches: ["Computer Science", "AI & ML", "Electronics", "Mechanical", "Civil"],
+                fees: 170000,
+                rating: 4.0,
+                placement: 80,
+                logo: "🌅",
+                website: "https://newhorizonindia.edu",
+                established: 2001
+            },
+            {
+                id: 10,
+                name: "Acharya Institute of Technology",
+                location: "Bangalore",
+                cutoff: {
+                    general: 4500,
+                    obc: 10000,
+                    scst: 25000
+                },
+                branches: ["Computer Science", "Electronics", "Mechanical", "Civil", "Information Science"],
+                fees: 150000,
+                rating: 3.9,
+                placement: 78,
+                logo: "🔭",
+                website: "https://acharya.ac.in",
+                established: 1990
+            }
+        ];
+
+        // Chatbot functionality
+        class KCETChatbot {
+            constructor() {
+                this.messagesContainer = document.getElementById('chatbotMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.sendButton = document.getElementById('sendMessage');
+                this.isTyping = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.showWelcomeMessage();
+            }
+
+            setupEventListeners() {
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+
+                // Setup quick question buttons
+                document.querySelectorAll('.quick-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const question = button.getAttribute('data-question');
+                        this.addMessage(question, 'user');
+                        
+                        // Show typing indicator
+                        this.showTypingIndicator();
+
+                        // Generate bot response after delay
+                        setTimeout(() => {
+                            this.removeTypingIndicator();
+                            const response = this.generateBotResponse(question);
+                            this.addMessage(response, 'bot');
+                        }, 1500);
+                    });
+                });
+            }
+
+            sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message || this.isTyping) return;
+
+                // Add user message
+                this.addMessage(message, 'user');
+                this.chatInput.value = '';
+
+                // Show typing indicator
+                this.showTypingIndicator();
+
+                // Generate bot response after delay
+                setTimeout(() => {
+                    this.removeTypingIndicator();
+                    const response = this.generateBotResponse(message);
+                    this.addMessage(response, 'bot');
+                }, 1500);
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                if (sender === 'bot') {
+                    messageDiv.innerHTML = `
+                        <div class="message-header">
+                            <strong>KCET Assistant</strong>
+                            <span>${timestamp}</span>
+                        </div>
+                        <div class="message-content">${this.formatMessage(text)}</div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="message-header">
+                            <strong>You</strong>
+                            <span>${timestamp}</span>
+                        </div>
+                        <div class="message-content">${text}</div>
+                    `;
+                }
+                
+                this.messagesContainer.appendChild(messageDiv);
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+
+            showTypingIndicator() {
+                this.isTyping = true;
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot-message typing-indicator';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <div class="message-header">
+                        <strong>KCET Assistant</strong>
+                        <span>typing...</span>
+                    </div>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+                this.messagesContainer.appendChild(typingDiv);
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+
+            removeTypingIndicator() {
+                this.isTyping = false;
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            formatMessage(text) {
+                // Convert line breaks to HTML and add basic formatting
+                return text
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+                    .replace(/_(.*?)_/g, '<em>$1</em>');
+            }
+
+            showWelcomeMessage() {
+                const welcomeMessage = `Hello! 👋 I'm your KCET college assistant. I can help you:
+
+• Find colleges based on your KCET rank
+• Compare different engineering colleges  
+• Get information about fees, placements, and cutoffs
+• Recommend colleges for specific branches
+
+Please share your KCET rank and preferred branch to get started!`;
+                
+                this.addMessage(welcomeMessage, 'bot');
+            }
+
+            generateBotResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                // Extract rank and branch from message
+                const rankMatch = message.match(/\d+/g);
+                const rank = rankMatch ? parseInt(rankMatch[0]) : 0;
+                
+                let branch = '';
+                const branchKeywords = {
+                    'Computer Science': ['computer', 'cs', 'cse', 'computer science'],
+                    'Electronics': ['electronics', 'ec', 'ece', 'electronics communication'],
+                    'Mechanical': ['mechanical', 'mech'],
+                    'Civil': ['civil'],
+                    'AI & ML': ['ai', 'ml', 'artificial', 'machine learning', 'ai ml'],
+                    'Information Science': ['information', 'is', 'ise', 'information science']
+                };
+                
+                for (const [branchName, keywords] of Object.entries(branchKeywords)) {
+                    if (keywords.some(keyword => lowerMessage.includes(keyword))) {
+                        branch = branchName;
+                        break;
+                    }
+                }
+                
+                if (rank > 0) {
+                    return this.generateRankBasedResponse(rank, branch, lowerMessage);
+                }
+                
+                // Handle specific queries
+                if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                    return "Hello! 👋 I'm your KCET college assistant. How can I help you today?";
+                } 
+                else if (lowerMessage.includes('thank')) {
+                    return "You're welcome! 😊 I'm glad I could help. If you have any more questions about KCET colleges, feel free to ask!";
+                } 
+                else if (lowerMessage.includes('placement') || lowerMessage.includes('package') || lowerMessage.includes('salary')) {
+                    return this.generatePlacementResponse();
+                } 
+                else if (lowerMessage.includes('fee') || lowerMessage.includes('affordable') || lowerMessage.includes('cost')) {
+                    return this.generateFeesResponse();
+                }
+                else if (lowerMessage.includes('cutoff') || lowerMessage.includes('rank')) {
+                    return "I can help you with cutoff ranks! 🎯\n\nPlease tell me your KCET rank and I'll show you which colleges you can get into. You can also specify a branch if you have a preference.\n\nFor example: \"My rank is 2500 and I want Computer Science\"";
+                }
+                else if (lowerMessage.includes('branch') || lowerMessage.includes('course')) {
+                    return "Here are the popular engineering branches available:\n\n• Computer Science & Engineering (CSE)\n• Artificial Intelligence & Machine Learning (AI&ML)\n• Electronics & Communication (ECE)\n• Mechanical Engineering\n• Civil Engineering\n• Information Science (ISE)\n• Electrical Engineering\n• Biotechnology\n\nWhich branch interests you? Please share your KCET rank too!";
+                }
+                else if (lowerMessage.includes('best') || lowerMessage.includes('top')) {
+                    return this.generateTopCollegesResponse();
+                }
+                else {
+                    return "I'm here to help you find the perfect engineering college! 🎓\n\nTo give you better recommendations, please share:\n\n• Your KCET rank\n• Your preferred branch (Computer Science, Electronics, etc.)\n• Any specific preferences (fees, placement, location)\n\nYou can also ask me about:\n• Cutoff ranks for specific colleges\n• Placement statistics\n• Fee structure\n• College comparisons";
+                }
+            }
+
+            generateRankBasedResponse(rank, branch, lowerMessage) {
+                // Filter colleges based on rank with some buffer
+                const suitableColleges = colleges.filter(college => 
+                    rank <= college.cutoff.general * 1.5 // Adding 50% buffer for safety
+                ).sort((a, b) => a.cutoff.general - b.cutoff.general).slice(0, 6);
+                
+                if (suitableColleges.length === 0) {
+                    return `With a rank of ${rank}, it might be challenging to get into these top Bangalore colleges. 😔\n\nConsider these options:\n\n🔹 *Improve your rank* in the next attempt\n🔹 *Management quota* in private colleges\n🔹 *Colleges outside Bangalore* with lower cutoffs\n🔹 *Other entrance exams* like COMEDK\n\nWould you like information about alternative options or colleges in other cities?`;
+                }
+                
+                let response = `🎯 Based on your rank *${rank}*, here are suitable colleges:\n\n`;
+                
+                suitableColleges.forEach((college, index) => {
+                    const safetyLevel = rank <= college.cutoff.general ? "🟢 Safe" : 
+                                      rank <= college.cutoff.general * 1.2 ? "🟡 Moderate" : "🔴 Ambitious";
+                    
+                    response += `*${index + 1}. ${college.name}*\n`;
+                    response += `   📊 Cutoff: ${college.cutoff.general} | ${safetyLevel}\n`;
+                    response += `   💰 Fees: ₹${college.fees.toLocaleString()}/year\n`;
+                    response += `   ⭐ Rating: ${college.rating}/5\n`;
+                    response += `   📈 Placement: ${college.placement}%\n`;
+                    response += `   🎓 Branches: ${college.branches.slice(0, 3).join(', ')}${college.branches.length > 3 ? '...' : ''}\n\n`;
+                });
+                
+                if (branch) {
+                    const branchColleges = suitableColleges.filter(college => 
+                        college.branches.some(b => b.toLowerCase().includes(branch.toLowerCase()))
+                    );
+                    
+                    if (branchColleges.length > 0) {
+                        response += `\n💡 For *${branch}*, I particularly recommend:\n\n`;
+                        branchColleges.slice(0, 3).forEach(college => {
+                            const isGoodForBranch = college.rating >= 4.0 ? "🌟 Excellent" : "✅ Good";
+                            response += `• *${college.name}* - ${isGoodForBranch} for ${branch}\n`;
+                        });
+                    } else {
+                        response += `\n⚠️ Note: ${branch} might not be available in these colleges with your rank. Consider:\n\n`;
+                        const alternativeColleges = colleges.filter(c => 
+                            c.branches.some(b => b.toLowerCase().includes(branch.toLowerCase())) && 
+                            rank <= c.cutoff.general * 2
+                        ).slice(0, 2);
+                        
+                        if (alternativeColleges.length > 0) {
+                            alternativeColleges.forEach(college => {
+                                response += `• *${college.name}* (Cutoff: ${college.cutoff.general})\n`;
+                            });
+                            response += "\nThese might be more ambitious choices for your rank.";
+                        }
+                    }
+                }
+                
+                response += "\n💡 *Next Steps:*\n";
+                response += "• Shortlist colleges that interest you\n";
+                response += "• Compare 2-3 colleges side by side\n";
+                response += "• Visit college websites for detailed info\n";
+                response += "• Check hostel facilities and campus life\n\n";
+                response += "Would you like me to help you compare any of these colleges or provide more details about a specific college?";
+                
+                return response;
+            }
+
+            generatePlacementResponse() {
+                const topPlacementColleges = [...colleges]
+                    .sort((a, b) => b.placement - a.placement)
+                    .slice(0, 5);
+                
+                let response = "🏆 *Top Colleges by Placement Percentage:*\n\n";
+                
+                topPlacementColleges.forEach((college, index) => {
+                    response += `*${index + 1}. ${college.name}*\n`;
+                    response += `   📊 Placement: ${college.placement}%\n`;
+                    response += `   ⭐ Rating: ${college.rating}/5\n`;
+                    response += `   🎯 Cutoff: ${college.cutoff.general}\n\n`;
+                });
+                
+                response += "💡 *Top Recruiters:* Amazon, Microsoft, Google, Infosys, TCS, Wipro, Intel, Qualcomm\n\n";
+                response += "Want to know which of these colleges match your KCET rank? Share your rank with me!";
+                
+                return response;
+            }
+
+            generateFeesResponse() {
+                const affordableColleges = [...colleges]
+                    .sort((a, b) => a.fees - b.fees)
+                    .slice(0, 5);
+                
+                let response = "💰 *Most Affordable Engineering Colleges:*\n\n";
+                
+                affordableColleges.forEach((college, index) => {
+                    response += `*${index + 1}. ${college.name}*\n`;
+                    response += `   💰 Fees: ₹${college.fees.toLocaleString()}/year\n`;
+                    response += `   📊 Placement: ${college.placement}%\n`;
+                    response += `   ⭐ Rating: ${college.rating}/5\n`;
+                    response += `   🎯 Cutoff: ${college.cutoff.general}\n\n`;
+                });
+                
+                response += "💡 *Additional Options:*\n";
+                response += "• Government colleges have lower fees but higher cutoffs\n";
+                response += "• Look for scholarships and education loans\n";
+                response += "• Consider fee reimbursement schemes\n\n";
+                response += "Share your KCET rank to see which affordable colleges you can get!";
+                
+                return response;
+            }
+
+            generateTopCollegesResponse() {
+                const topColleges = [...colleges]
+                    .sort((a, b) => b.rating - a.rating)
+                    .slice(0, 5);
+                
+                let response = "🏅 *Top Rated Engineering Colleges in Bangalore:*\n\n";
+                
+                topColleges.forEach((college, index) => {
+                    response += `*${index + 1}. ${college.name}*\n`;
+                    response += `   ⭐ Rating: ${college.rating}/5\n`;
+                    response += `   🎯 Cutoff: ${college.cutoff.general}\n`;
+                    response += `   💰 Fees: ₹${college.fees.toLocaleString()}/year\n`;
+                    response += `   📊 Placement: ${college.placement}%\n`;
+                    response += `   📍 Established: ${college.established}\n\n`;
+                });
+                
+                response += "💡 These colleges are highly rated for:\n";
+                response += "• Academic excellence\n• Infrastructure\n• Faculty quality\n• Placement records\n• Campus life\n\n";
+                response += "Want to know if you can get into any of these? Share your KCET rank!";
+                
+                return response;
+            }
+        }
+
+        // Initialize chatbot when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            new KCETChatbot();
+        });
+    </script>
+</body>
+</html>

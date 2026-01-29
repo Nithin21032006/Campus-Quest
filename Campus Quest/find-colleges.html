@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Colleges - CampusQuest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>CampusQuest</h1>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="find-colleges.html" class="active">Find Colleges</a></li>
+                        <li><a href="compare.html">Compare</a></li>
+                        <li><a href="shortlist.html">Shortlist</a></li>
+                        <li><a href="chatbot.html">Assistant</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Filter Section -->
+        <section id="filters">
+            <h2 class="section-title">Filter Colleges</h2>
+            <div class="filter-section">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="rank">Your KCET Rank</label>
+                        <input type="number" id="rank" placeholder="Enter your rank">
+                    </div>
+                    <div class="filter-group">
+                        <label for="category">Category</label>
+                        <select id="category">
+                            <option value="general">General</option>
+                            <option value="obc">OBC</option>
+                            <option value="scst">SC/ST</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="branch">Preferred Branch</label>
+                        <select id="branch">
+                            <option value="all">All Branches</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Electronics">Electronics & Communication</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="AI & ML">AI & ML</option>
+                            <option value="Information Science">Information Science</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort">Sort By</label>
+                        <select id="sort">
+                            <option value="cutoff">Cutoff Rank</option>
+                            <option value="fees">Fees (Low to High)</option>
+                            <option value="rating">Rating (High to Low)</option>
+                            <option value="placement">Placement % (High to Low)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" id="resetFilters">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button class="btn btn-primary" id="applyFilters">
+                        <i class="fas fa-filter"></i> Apply Filters
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- College Grid -->
+        <section id="colleges">
+            <div class="section-header">
+                <h2 class="section-title">Top Engineering Colleges</h2>
+                <div class="results-count">
+                    Showing <span id="resultsCount">0</span> colleges
+                </div>
+            </div>
+            <div class="college-grid" id="collegeGrid">
+                <!-- College cards will be dynamically inserted here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>CampusQuest</h3>
+                    <p>Your comprehensive guide to engineering colleges in Bangalore based on KCET rankings.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="find-colleges.html">Find Colleges</a></li>
+                        <li><a href="compare.html">Compare Colleges</a></li>
+                        <li><a href="shortlist.html">My Shortlist</a></li>
+                        <li><a href="chatbot.html">AI Assistant</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@kcetfilter.com</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 CampusQuest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/college-data.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
